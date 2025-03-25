@@ -72,15 +72,25 @@ export default function HowItWorks() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative"
         >
+          {/* Connecting Lines - Desktop */}
+          <div className="hidden lg:block absolute top-8 left-0 right-0 h-0.5 bg-gray-200" style={{ zIndex: 1 }}>
+            {/* Dots */}
+            <div className="absolute left-[12.5%] top-1/2 w-3 h-3 bg-primary-500 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute left-[37.5%] top-1/2 w-3 h-3 bg-primary-500 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute left-[62.5%] top-1/2 w-3 h-3 bg-primary-500 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute left-[87.5%] top-1/2 w-3 h-3 bg-primary-500 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+          </div>
+
           {steps.map((step, index) => (
             <motion.div
               key={index}
               variants={itemVariants}
               className="relative"
+              style={{ zIndex: 2 }}
             >
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center bg-white">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mb-4">
                   <step.icon className="w-8 h-8 text-primary-600" />
                 </div>
@@ -90,11 +100,6 @@ export default function HowItWorks() {
                 <p className="text-gray-600">
                   {step.description}
                 </p>
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 transform -translate-y-1/2">
-                    <div className="absolute right-0 top-0 w-4 h-4 bg-primary-500 rounded-full transform -translate-y-1/2 translate-x-1/2" />
-                  </div>
-                )}
               </div>
             </motion.div>
           ))}

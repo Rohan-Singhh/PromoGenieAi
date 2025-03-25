@@ -24,28 +24,28 @@ const companyLogos = [
   {
     name: "Microsoft",
     logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg",
-    width: "w-32"
+    width: "w-24 sm:w-32"
   },
   {
     name: "Google",
     logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
-    width: "w-28"
+    width: "w-20 sm:w-28"
   },
   {
     name: "Amazon",
     logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
-    width: "w-32"
+    width: "w-24 sm:w-32"
   },
   {
     name: "Meta",
     logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
-    width: "w-24"
+    width: "w-20 sm:w-24"
   }
 ];
 
 export default function Hero() {
   return (
-    <div className="relative min-h-screen flex items-center">
+    <div className="relative min-h-screen flex items-center pt-16 sm:pt-0">
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-primary-100 animate-gradient" />
       
@@ -77,7 +77,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="container relative z-10">
+      <div className="container relative z-10 px-4 sm:px-6">
         <motion.div
           className="max-w-3xl mx-auto text-center"
           variants={containerVariants}
@@ -85,14 +85,14 @@ export default function Hero() {
           animate="visible"
         >
           <motion.h1
-            className="heading bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-800"
             variants={itemVariants}
           >
             AI-Powered Ads in Seconds
           </motion.h1>
           
           <motion.p
-            className="subheading"
+            className="mt-4 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto"
             variants={itemVariants}
           >
             Type an idea, let AI create scripts & videos. No influencers, no hassle.
@@ -103,14 +103,14 @@ export default function Hero() {
             variants={itemVariants}
           >
             <motion.button
-              className="btn-primary text-lg"
+              className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Try for Free
             </motion.button>
             <motion.button
-              className="btn-secondary text-lg"
+              className="btn-secondary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -120,17 +120,17 @@ export default function Hero() {
 
           {/* Trust Badges */}
           <motion.div
-            className="mt-12"
+            className="mt-12 sm:mt-16"
             variants={itemVariants}
           >
-            <p className="text-sm font-medium text-gray-600 mb-8">Trusted by innovative brands worldwide</p>
-            <div className="flex flex-wrap justify-center items-center gap-8">
+            <p className="text-sm font-medium text-gray-600 mb-6 sm:mb-8">Trusted by innovative brands worldwide</p>
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8">
               {companyLogos.map((company, index) => (
                 <motion.img
                   key={index}
                   src={company.logo}
                   alt={company.name}
-                  className={`${company.width} h-8 object-contain opacity-60 hover:opacity-100 transition-opacity`}
+                  className={`${company.width} h-6 sm:h-8 object-contain opacity-60 hover:opacity-100 transition-opacity`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 />
