@@ -56,12 +56,28 @@ app.use(cors({
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         
-        if (allowedOrigins.indexOf(origin) === -1) {
-            console.log('Blocked origin:', origin); // Debug log
-            return callback(new Error('Not allowed by CORS'));
+        // Allow all localhost origins
+        if (origin.includes('localhost')) {
+            return callback(null, true);
         }
-        
-        return callback(null, true);
+
+        // Allow all Vercel preview deployments and production URLs
+        if (origin.includes('vercel.app')) {
+            return callback(null, true);
+        }
+
+        // Allow all Render deployments
+        if (origin.includes('onrender.com')) {
+            return callback(null, true);
+        }
+
+        // For all other origins, check against the allowed list
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            return callback(null, true);
+        }
+
+        console.log('Blocked origin:', origin); // Debug log
+        return callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
