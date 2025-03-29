@@ -132,6 +132,26 @@ const authService = {
         }
     },
 
+    // Update theme preference
+    updateTheme: async (theme) => {
+        try {
+            const response = await axios.post(
+                `${API_URL}/users/theme`,
+                { theme },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Theme update error:', error.response?.data || error.message);
+            throw error.response?.data || { message: 'Failed to update theme preference' };
+        }
+    },
+
     // Logout
     logout: () => {
         localStorage.removeItem('token');

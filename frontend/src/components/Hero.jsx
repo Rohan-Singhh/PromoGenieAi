@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -44,6 +45,8 @@ const companyLogos = [
 ];
 
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <div className="relative min-h-screen flex items-center pt-16 sm:pt-0">
       {/* Gradient Background */}
@@ -106,6 +109,7 @@ export default function Hero() {
               className="btn-primary text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/signin')}
             >
               Try for Free
             </motion.button>

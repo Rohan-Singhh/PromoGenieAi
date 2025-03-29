@@ -208,6 +208,52 @@ app.get('/api/users/me', async (req, res) => {
     }
 });
 
+// Update theme preference route
+app.post('/api/users/theme', async (req, res) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        // Get user ID from token
+        const [userId] = Buffer.from(token, 'base64').toString().split(':');
+        
+        const { theme } = req.body;
+        if (!theme || !['light', 'dark', 'system'].includes(theme)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Invalid theme value' 
+            });
+        }
+
+        // Update user's theme preference
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { theme },
+            { new: true }
+        ).select('-password');
+
+        if (!user) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'User not found' 
+            });
+        }
+
+        res.json({ 
+            success: true, 
+            theme: user.theme
+        });
+    } catch (error) {
+        console.error('Theme update error:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Error updating theme preference' 
+        });
+    }
+});
+
 // Script generation route
 app.post('/api/generate-script', async (req, res) => {
     try {

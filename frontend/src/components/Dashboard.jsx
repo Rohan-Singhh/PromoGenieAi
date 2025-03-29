@@ -22,6 +22,26 @@ import GenerationModal from './GenerationModal';
 import ScriptDisplayModal from './ScriptDisplayModal';
 import SettingsModal from './SettingsModal';
 import { useTheme } from '../context/ThemeContext';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+// Register ChartJS components
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
 const Dashboard = () => {
     const { theme } = useTheme();
@@ -228,6 +248,55 @@ const Dashboard = () => {
             buttonText: 'Upgrade Now'
         }
     ];
+
+    // Add this function to process script history for the chart
+    const getMonthlyScriptData = () => {
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const currentYear = new Date().getFullYear();
+        const monthlyData = new Array(12).fill(0);
+
+        scriptHistory.forEach(script => {
+            const scriptDate = new Date(script.createdAt || script.date);
+            if (scriptDate.getFullYear() === currentYear) {
+                monthlyData[scriptDate.getMonth()]++;
+            }
+        });
+
+        return {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Scripts Generated',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(59, 130, 246, 0.5)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1,
+                },
+            ],
+        };
+    };
+
+    // Add chart options
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Monthly Script Generation',
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1,
+                },
+            },
+        },
+    };
 
     // Render different sections based on activeSection
     const renderSection = () => {
@@ -699,8 +768,8 @@ const Dashboard = () => {
                         {/* Usage Chart */}
                         <div className="p-6 rounded-xl bg-white shadow-lg">
                             <h3 className="text-xl font-semibold mb-4">Monthly Usage</h3>
-                            <div className="h-64 flex items-center justify-center text-gray-500">
-                                Usage chart coming soon...
+                            <div className="h-[400px]">
+                                <Bar options={chartOptions} data={getMonthlyScriptData()} />
                             </div>
                         </div>
 
