@@ -12,7 +12,7 @@ PromoGenieAI is a powerful AI-driven platform that helps businesses create engag
 
 ## 🚀 Live Demo
 
-- Frontend: [Your Frontend URL]
+- Frontend: On Vercel
 - Backend: [https://promogenieai.onrender.com](https://promogenieai.onrender.com)
 
 ## 🛠️ Tech Stack
@@ -169,9 +169,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Team
 
-- [Your Name] - Full Stack Developer
-- [Other Team Members]
-
-## 📞 Support
-
-For support, email [your-email@example.com] or join our Slack channel. 
+- Rohan Ranjan - Full Stack Developer

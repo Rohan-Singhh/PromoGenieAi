@@ -19,7 +19,13 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(morgan('dev')); // Logging HTTP requests
 app.use(cors({ 
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://promo-genie-ai-tgyr.vercel.app',  // Production URL
+        'https://promo-genie-ai-tgyr-git-main-rohan-singhs-projects-218eb5a2.vercel.app', // Main branch preview
+        'https://promo-genie-ai-tgyr-n8ht0077v-rohan-singhs-projects-218eb5a2.vercel.app' // Preview deployments
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
