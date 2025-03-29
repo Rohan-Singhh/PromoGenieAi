@@ -16,6 +16,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Fix: Trust proxies for rate limiting
+app.set("trust proxy", 1);
+
 // Middleware
 app.use(morgan('dev')); // Logging HTTP requests
 app.use(cors({
@@ -50,10 +53,19 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
+// Fix: MongoDB Connection
+const mongoURI = process.env.MONGODB_URI;
+if (!mongoURI) {
+    console.error('MONGO_URI is missing in environment variables. Set it in your .env file or Render environment variables.');
+    process.exit(1); // Exit if no MongoDB URI is provided
+}
+
+mongoose.connect(mongoURI)
     .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .catch(err => {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit on connection failure
+    });
 
 // Routes
 app.get('/', (req, res) => {
@@ -168,4 +180,4 @@ process.on('SIGINT', async () => {
 // Start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-}); 
+});
