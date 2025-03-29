@@ -41,18 +41,27 @@ app.set("trust proxy", 1);
 
 // Middleware
 app.use(morgan('dev')); // Logging HTTP requests
+
+// CORS Configuration
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'https://promo-genie-ai-tgyr.vercel.app',
+    'https://promo-genie-ai.onrender.com',
+    'https://promogenieai.vercel.app'
+];
+
 app.use(cors({
-    origin: (origin, callback) => {
-        const allowedOrigins = [
-            'http://localhost:3000',
-            'http://localhost:5173',
-            'https://promo-genie-ai-tgyr.vercel.app'
-        ];
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) === -1) {
+            console.log('Blocked origin:', origin); // Debug log
+            return callback(new Error('Not allowed by CORS'));
         }
+        
+        return callback(null, true);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
