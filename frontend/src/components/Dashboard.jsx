@@ -22,25 +22,17 @@ import GenerationModal from './GenerationModal';
 import ScriptDisplayModal from './ScriptDisplayModal';
 import SettingsModal from './SettingsModal';
 import { useTheme } from '../context/ThemeContext';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+import Chart from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 
 // Register ChartJS components
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+Chart.register(
+    'categoryScale',
+    'linearScale',
+    'barElement',
+    'title',
+    'tooltip',
+    'legend'
 );
 
 const Dashboard = () => {
