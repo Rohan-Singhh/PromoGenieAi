@@ -44,6 +44,13 @@ const authService = {
                 },
                 withCredentials: true
             });
+            
+            // Store token and user data
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            
             return response.data;
         } catch (error) {
             console.error('Login error:', error.response?.data || error.message);
@@ -67,6 +74,61 @@ const authService = {
         } catch (error) {
             console.error('Error fetching user:', error);
             throw error;
+        }
+    },
+
+    // Generate script
+    generateScript: async (scriptData, signal) => {
+        try {
+            const response = await axios.post(`${API_URL}/generate-script`, scriptData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                signal
+            });
+            return response.data;
+        } catch (error) {
+            if (error.name === 'CanceledError') {
+                throw new Error('Request was cancelled');
+            }
+            console.error('Script generation error:', error.response?.data || error.message);
+            throw error.response?.data || { message: 'Script generation failed' };
+        }
+    },
+
+    // Get user's script history
+    getScriptHistory: async () => {
+        try {
+            const response = await axios.get(`${API_URL}/scripts/history`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching script history:', error.response?.data || error.message);
+            throw error.response?.data || { message: 'Failed to fetch script history' };
+        }
+    },
+
+    // Change password
+    changePassword: async (currentPassword, newPassword, confirmPassword) => {
+        try {
+            const response = await axios.post(
+                `${API_URL}/users/change-password`,
+                { currentPassword, newPassword, confirmPassword },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Password change error:', error.response?.data || error.message);
+            throw error.response?.data || { message: 'Failed to change password' };
         }
     },
 
