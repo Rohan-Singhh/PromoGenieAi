@@ -927,26 +927,27 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Main Layout */}
-            <div className="relative flex flex-row min-h-screen overflow-hidden">
-                {/* Mobile Menu Overlay */}
-                <AnimatePresence>
-                    {isMobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        />
-                    )}
-                </AnimatePresence>
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    />
+                )}
+            </AnimatePresence>
 
+            {/* Main Layout */}
+            <div className="relative flex min-h-screen">
                 {/* Sidebar - Always visible on desktop, sliding on mobile */}
-                <div 
+                <aside 
                     className={`
-                        fixed lg:relative z-50 lg:z-auto w-[280px] flex-shrink-0 border-r
-                        h-screen min-h-full overflow-y-auto
+                        fixed lg:sticky top-0 left-0 bottom-0 h-screen
+                        z-50 lg:z-10 w-[280px] flex-shrink-0 border-r
+                        overflow-y-auto
                         ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
                         shadow-lg lg:shadow-none
                         transition-transform duration-300 ease-in-out
@@ -998,10 +999,10 @@ const Dashboard = () => {
                             </button>
                         ))}
                     </nav>
-                </div>
+                </aside>
 
                 {/* Main Content */}
-                <div className={`flex-1 p-4 lg:p-8 transition-all duration-300 ${isMobileMenuOpen ? 'lg:ml-0 blur-sm lg:blur-none' : ''}`}>
+                <main className={`flex-1 p-4 lg:p-8 transition-all duration-300 ${isMobileMenuOpen ? 'lg:ml-0 blur-sm lg:blur-none' : ''}`}>
                     <div className="max-w-7xl mx-auto">
                         {/* Header */}
                         <div className="flex justify-between items-center mb-6 lg:mb-8">
@@ -1042,7 +1043,7 @@ const Dashboard = () => {
                             </motion.div>
                         </AnimatePresence>
                     </div>
-                </div>
+                </main>
             </div>
 
             {/* Modals */}
