@@ -277,24 +277,44 @@ app.post('/api/generate-script', async (req, res) => {
         }
 
         // Create prompt for Cohere
-        const prompt = `Generate 8 different advertising scripts for ${productName} targeting ${targetAudience}. 
+        const prompt = `Generate 5 different video advertising scripts for ${productName} targeting ${targetAudience}. 
         Tone: ${tone}
         Style: ${adStyle}
         Call to Action: ${callToAction || 'Get started today!'}
         
-        Requirements:
-        1. Each script should be unique, engaging, and concise
-        2. Follow the specified tone and style
-        3. Keep each script between 2-3 sentences
-        4. Make each script memorable and persuasive
-        5. Include the call to action naturally
-        6. Format each script with just a number (1-8) followed by a colon, like this:
+        Requirements for each script:
+        1. Each script should be detailed enough for a 2-3 minute video
+        2. Include specific scenes, transitions, and visual suggestions
+        3. Break down the script into clear sections:
+           - Opening Hook (15-20 seconds)
+           - Problem Statement (20-30 seconds)
+           - Solution/Product Introduction (30-40 seconds)
+           - Key Benefits/Features (30-40 seconds)
+           - Social Proof/Testimonials (20-30 seconds)
+           - Call to Action (15-20 seconds)
+        4. Include suggestions for:
+           - Visual elements and transitions
+           - Background music mood
+           - Voice-over style
+           - Text overlays
+        5. Make each script unique and engaging
+        6. Follow the specified tone and style
+        7. Format each script with a number (1-5) followed by a colon
         
         Example format:
-        1: Your script text here with a natural call to action.
-        2: Another script text here with a natural call to action.
+        1: [Opening Hook]
+        [Visual: Close-up of frustrated person]
+        [Music: Upbeat, energetic]
+        "Are you tired of [problem]? We understand your struggle..."
         
-        Important: Do not include any categories or labels (like "Problem-Solution" or "Storytelling"). Just number them 1-8.`;
+        [Problem Statement]
+        [Visual: Split screen showing before/after]
+        [Transition: Smooth fade]
+        "Every day, people like you face [specific problem]..."
+        
+        [Continue with other sections...]
+        
+        Important: Each script should be complete and ready for video production.`;
 
         console.log('Sending request to Cohere with prompt:', prompt);
 
@@ -308,7 +328,7 @@ app.post('/api/generate-script', async (req, res) => {
                 }
             ],
             temperature: 0.8,
-            max_tokens: 1000
+            max_tokens: 2500 // Increased token limit for more detailed scripts
         });
 
         // Extract and process scripts
@@ -337,17 +357,25 @@ app.post('/api/generate-script', async (req, res) => {
             .map(script => script.replace(/^\d+\.\s*/, '').trim())
             .filter(script => script.length > 0);
 
-        // Ensure we have exactly 8 scripts
-        if (scripts.length > 8) {
-            scripts = scripts.slice(0, 8);
-        } else if (scripts.length < 8) {
+        // Ensure we have exactly 5 scripts
+        if (scripts.length > 5) {
+            scripts = scripts.slice(0, 5);
+        } else if (scripts.length < 4) {
             // Generate additional scripts if needed
-            const additionalPrompt = `Generate ${8 - scripts.length} more unique advertising scripts for ${productName} targeting ${targetAudience}. 
+            const additionalPrompt = `Generate ${5 - scripts.length} more unique video advertising scripts for ${productName} targeting ${targetAudience}. 
             Tone: ${tone}
             Style: ${adStyle}
             Call to Action: ${callToAction || 'Get started today!'}
             
-            Make sure these are different from the previous scripts.`;
+            Follow the same detailed format as before, including sections for:
+            - Opening Hook
+            - Problem Statement
+            - Solution/Product Introduction
+            - Key Benefits/Features
+            - Social Proof/Testimonials
+            - Call to Action
+            
+            Include visual suggestions, music mood, and voice-over style for each section.`;
 
             const additionalResponse = await cohereClient.chat({
                 model: 'command-a-03-2025',
@@ -358,7 +386,7 @@ app.post('/api/generate-script', async (req, res) => {
                     }
                 ],
                 temperature: 0.8,
-                max_tokens: 500
+                max_tokens: 1500
             });
 
             let additionalScripts = [];
@@ -385,7 +413,7 @@ app.post('/api/generate-script', async (req, res) => {
                 .map(script => script.replace(/^\d+\.\s*/, '').trim())
                 .filter(script => script.length > 0);
 
-            scripts = [...scripts, ...additionalScripts].slice(0, 8);
+            scripts = [...scripts, ...additionalScripts].slice(0, 5);
         }
 
         // Save the scripts to the database

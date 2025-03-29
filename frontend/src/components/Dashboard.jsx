@@ -40,6 +40,7 @@ const Dashboard = () => {
     const [activeSection, setActiveSection] = useState('overview');
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const settingsRef = useRef(null);
     const navigate = useNavigate();
@@ -118,6 +119,7 @@ const Dashboard = () => {
         }
     };
 
+    // Update navigation items
     const navigation = [
         { name: 'Overview', icon: HomeIcon, id: 'overview' },
         { name: 'Ad Generation', icon: DocumentTextIcon, id: 'generation' },
@@ -295,35 +297,35 @@ const Dashboard = () => {
         switch (activeSection) {
             case 'overview':
                 return (
-                    <div className="space-y-8">
+                    <div className="space-y-4 lg:space-y-8">
                         {/* Welcome Section */}
-                        <div className="text-center">
+                        <div className="text-center px-4">
                             <motion.h1 
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-4xl font-bold mb-2"
+                                className="text-3xl lg:text-4xl font-bold mb-2"
                             >
                                 Welcome back, {user?.fullName}!
                             </motion.h1>
                             <motion.p 
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="text-lg text-primary-600"
+                                className="text-base lg:text-lg text-primary-600"
                             >
                                 Let's craft the perfect ad script in seconds!
                             </motion.p>
                         </div>
 
                         {/* Analytics Section */}
-                        <div className="p-6 rounded-xl bg-white shadow-lg">
-                            <h2 className="text-2xl font-semibold mb-6">Your Analytics</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-4 lg:p-6 rounded-xl bg-white shadow-lg">
+                            <h2 className="text-xl lg:text-2xl font-semibold mb-4 lg:mb-6">Your Analytics</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                 <div>
-                                    <h3 className="text-lg font-medium mb-2">Scripts Generated</h3>
-                                    <p className="text-3xl font-bold text-primary-600">{scriptsGenerated}</p>
+                                    <h3 className="text-base lg:text-lg font-medium mb-2">Scripts Generated</h3>
+                                    <p className="text-2xl lg:text-3xl font-bold text-primary-600">{scriptsGenerated}</p>
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-medium mb-2">Recent History</h3>
+                                    <h3 className="text-base lg:text-lg font-medium mb-2">Recent History</h3>
                                     <div className="space-y-2">
                                         {scriptHistory.slice(0, 3).map((history) => (
                                             <div 
@@ -350,29 +352,29 @@ const Dashboard = () => {
 
             case 'generation':
                 return (
-                    <div className="space-y-8">
+                    <div className="space-y-4 lg:space-y-8">
                         {/* History Button */}
-                        <div className="flex justify-end">
+                        <div className="flex justify-end px-4">
                             <button
                                 onClick={() => setActiveSection('history')}
-                                className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-primary-600 hover:text-primary-700"
+                                className="flex items-center space-x-2 px-3 py-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-primary-600 hover:text-primary-700 text-sm lg:text-base"
                             >
-                                <DocumentTextIcon className="w-5 h-5" />
+                                <DocumentTextIcon className="w-4 h-4 lg:w-5 lg:h-5" />
                                 <span>View History</span>
                             </button>
                         </div>
 
                         {/* Script Generator Form */}
-                        <div className="p-8 rounded-xl bg-white shadow-lg max-w-4xl mx-auto">
-                            <h2 className="text-2xl font-semibold mb-8 text-center">Generate Your Ad Script</h2>
+                        <div className="p-4 lg:p-8 rounded-xl bg-white shadow-lg max-w-4xl mx-auto">
+                            <h2 className="text-xl lg:text-2xl font-semibold mb-6 lg:mb-8 text-center">Generate Your Ad Script</h2>
                             {error && (
-                                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
+                                <div className="mb-4 p-3 lg:p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm lg:text-base">
                                     {error}
                                 </div>
                             )}
-                            <div className="space-y-6">
+                            <div className="space-y-4 lg:space-y-6">
                                 {/* Basic Info Section */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                     <div className="space-y-2">
                                         <label className={`block text-sm font-medium`}>
                                             Product Name
@@ -385,7 +387,7 @@ const Dashboard = () => {
                                                 ...prev,
                                                 productName: e.target.value
                                             }))}
-                                            className="input-field w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            className="input-field w-full px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -400,13 +402,13 @@ const Dashboard = () => {
                                                 ...prev,
                                                 targetAudience: e.target.value
                                             }))}
-                                            className="input-field w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            className="input-field w-full px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Style Section */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
                                     <div className="space-y-2">
                                         <label className={`block text-sm font-medium`}>
                                             Tone
@@ -417,7 +419,7 @@ const Dashboard = () => {
                                                 ...prev,
                                                 tone: e.target.value
                                             }))}
-                                            className="input-field w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            className="input-field w-full px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm lg:text-base"
                                         >
                                             <option value="Professional">Professional</option>
                                             <option value="Playful">Playful</option>
@@ -435,7 +437,7 @@ const Dashboard = () => {
                                                 ...prev,
                                                 adStyle: e.target.value
                                             }))}
-                                            className="input-field w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            className="input-field w-full px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm lg:text-base"
                                         >
                                             <option value="Short & Catchy">Short & Catchy</option>
                                             <option value="Storytelling">Storytelling</option>
@@ -458,26 +460,26 @@ const Dashboard = () => {
                                                 ...prev,
                                                 callToAction: e.target.value
                                             }))}
-                                            className="input-field w-full px-4 py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                            className="input-field w-full px-3 py-2 lg:px-4 lg:py-2.5 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent text-sm lg:text-base"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Generate Button */}
-                                <div className="pt-6">
+                                <div className="pt-4 lg:pt-6">
                                     <button
                                         onClick={handleGenerateScript}
                                         disabled={isGenerating}
-                                        className="w-full py-3 px-6 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-primary-500/25"
+                                        className="w-full py-2.5 lg:py-3 px-4 lg:px-6 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-primary-500/25 text-sm lg:text-base"
                                     >
                                         {isGenerating ? (
                                             <>
-                                                <ArrowPathIcon className="w-5 h-5 animate-spin" />
+                                                <ArrowPathIcon className="w-4 h-4 lg:w-5 lg:h-5 animate-spin" />
                                                 <span>Generating...</span>
                                             </>
                                         ) : (
                                             <>
-                                                <DocumentTextIcon className="w-5 h-5" />
+                                                <DocumentTextIcon className="w-4 h-4 lg:w-5 lg:h-5" />
                                                 <span>Generate Script</span>
                                             </>
                                         )}
@@ -494,15 +496,15 @@ const Dashboard = () => {
                             onCancel={handleCancelGeneration}
                         >
                             {error ? (
-                                <div className="text-red-600 text-center">
+                                <div className="text-red-600 text-center text-sm lg:text-base">
                                     {error}
                                 </div>
                             ) : (
                                 <div className="text-center">
-                                    <div className="text-green-600 font-medium mb-2">
+                                    <div className="text-green-600 font-medium mb-2 text-sm lg:text-base">
                                         Scripts Generated Successfully!
                                     </div>
-                                    <p className="text-gray-600">
+                                    <p className="text-gray-600 text-sm lg:text-base">
                                         Your ad scripts are ready to be displayed.
                                     </p>
                                 </div>
@@ -794,21 +796,21 @@ const Dashboard = () => {
 
             case 'studio':
                 return (
-                    <div className="space-y-8">
-                        <div className="text-center mb-8">
-                            <h2 className="text-3xl font-bold mb-4">Video Studio</h2>
-                            <p className="text-gray-600 max-w-2xl mx-auto">
+                    <div className="space-y-4 lg:space-y-6 p-4">
+                        <div className="text-center mb-4 lg:mb-6">
+                            <h2 className="text-2xl lg:text-3xl font-bold mb-2">Video Studio</h2>
+                            <p className="text-gray-600 text-sm lg:text-base max-w-2xl mx-auto">
                                 Transform your scripts into engaging video content.
                             </p>
                         </div>
 
                         {/* Video Creation Form */}
-                        <div className="p-6 rounded-xl bg-white shadow-lg max-w-4xl mx-auto">
-                            <h3 className="text-xl font-semibold mb-6">Create New Video</h3>
-                            <div className="space-y-6">
+                        <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6">
+                            <h3 className="text-lg lg:text-xl font-semibold mb-4">Create New Video</h3>
+                            <div className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Select Script</label>
-                                    <select className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <label className="block text-sm font-medium mb-1 text-gray-700">Select Script</label>
+                                    <select className="w-full px-3 py-2 text-sm lg:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
                                         <option value="">Choose a script...</option>
                                         {scriptHistory.map((history) => (
                                             <option key={history._id || history.id} value={history._id || history.id}>
@@ -819,8 +821,8 @@ const Dashboard = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Video Style</label>
-                                    <select className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <label className="block text-sm font-medium mb-1 text-gray-700">Video Style</label>
+                                    <select className="w-full px-3 py-2 text-sm lg:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
                                         <option value="modern">Modern & Clean</option>
                                         <option value="dynamic">Dynamic & Energetic</option>
                                         <option value="minimal">Minimal & Elegant</option>
@@ -828,8 +830,8 @@ const Dashboard = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Background Music</label>
-                                    <select className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <label className="block text-sm font-medium mb-1 text-gray-700">Background Music</label>
+                                    <select className="w-full px-3 py-2 text-sm lg:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
                                         <option value="upbeat">Upbeat & Energetic</option>
                                         <option value="calm">Calm & Professional</option>
                                         <option value="none">No Music</option>
@@ -837,38 +839,38 @@ const Dashboard = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Voice Over</label>
-                                    <select className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <label className="block text-sm font-medium mb-1 text-gray-700">Voice Over</label>
+                                    <select className="w-full px-3 py-2 text-sm lg:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white">
                                         <option value="male">Male Voice</option>
                                         <option value="female">Female Voice</option>
                                         <option value="none">No Voice Over</option>
                                     </select>
                                 </div>
 
-                                <button className="w-full py-3 px-6 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center justify-center space-x-2">
-                                    <VideoCameraIcon className="w-5 h-5" />
+                                <button className="w-full py-2 lg:py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors flex items-center justify-center space-x-2 text-sm lg:text-base">
+                                    <VideoCameraIcon className="w-4 h-4 lg:w-5 lg:h-5" />
                                     <span>Generate Video</span>
                                 </button>
                             </div>
                         </div>
 
                         {/* Recent Videos */}
-                        <div className="p-6 rounded-xl bg-white shadow-lg">
-                            <h3 className="text-xl font-semibold mb-4">Recent Videos</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="border rounded-lg p-4">
-                                    <div className="aspect-video bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                                        <VideoCameraIcon className="w-12 h-12 text-gray-400" />
+                        <div className="bg-white rounded-xl shadow-lg p-4 lg:p-6">
+                            <h3 className="text-lg lg:text-xl font-semibold mb-4">Recent Videos</h3>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="border border-gray-200 rounded-lg p-3">
+                                    <div className="aspect-video bg-gray-50 rounded-lg mb-3 flex items-center justify-center">
+                                        <VideoCameraIcon className="w-10 h-10 text-gray-300" />
                                     </div>
-                                    <h4 className="font-medium mb-2">No videos yet</h4>
-                                    <p className="text-sm text-gray-600">Create your first video to see it here.</p>
+                                    <h4 className="font-medium text-sm lg:text-base mb-1">No videos yet</h4>
+                                    <p className="text-xs lg:text-sm text-gray-500">Create your first video to see it here.</p>
                                 </div>
-                                <div className="border rounded-lg p-4">
-                                    <div className="aspect-video bg-gray-100 rounded-lg mb-4 flex items-center justify-center">
-                                        <VideoCameraIcon className="w-12 h-12 text-gray-400" />
+                                <div className="border border-gray-200 rounded-lg p-3">
+                                    <div className="aspect-video bg-gray-50 rounded-lg mb-3 flex items-center justify-center">
+                                        <VideoCameraIcon className="w-10 h-10 text-gray-300" />
                                     </div>
-                                    <h4 className="font-medium mb-2">No videos yet</h4>
-                                    <p className="text-sm text-gray-600">Create your first video to see it here.</p>
+                                    <h4 className="font-medium text-sm lg:text-base mb-1">No videos yet</h4>
+                                    <p className="text-xs lg:text-sm text-gray-500">Create your first video to see it here.</p>
                                 </div>
                             </div>
                         </div>
@@ -926,20 +928,50 @@ const Dashboard = () => {
             </div>
 
             {/* Main Layout */}
-            <div className="relative flex min-h-screen">
-                {/* Sidebar */}
-                <motion.div
-                    initial={{ x: -300 }}
-                    animate={{ x: 0 }}
-                    className={`w-64 border-r ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white/80 border-gray-200'}`}
+            <div className="relative flex flex-row min-h-screen overflow-hidden">
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                    {isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        />
+                    )}
+                </AnimatePresence>
+
+                {/* Sidebar - Always visible on desktop, sliding on mobile */}
+                <div 
+                    className={`
+                        fixed lg:relative z-50 lg:z-auto w-[280px] flex-shrink-0 border-r
+                        h-screen min-h-full overflow-y-auto
+                        ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}
+                        shadow-lg lg:shadow-none
+                        transition-transform duration-300 ease-in-out
+                        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} 
+                        lg:translate-x-0
+                    `}
                 >
                     <div className="p-6">
                         <div className="flex items-center space-x-3">
-                            <UserIcon className={`w-8 h-8 text-primary-600`} />
+                            <UserIcon className="w-8 h-8 text-primary-600" />
                             <div>
-                                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>{user?.fullName || 'User'}</h2>
-                                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : ''}`}>Free Plan</p>
+                                <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
+                                    {user?.fullName || 'Rohan'}
+                                </h2>
+                                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+                                    Free Plan
+                                </p>
                             </div>
+                            {/* Close button for mobile only */}
+                            <button
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="ml-auto lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                            >
+                                <XMarkIcon className="w-6 h-6" />
+                            </button>
                         </div>
                     </div>
 
@@ -947,8 +979,11 @@ const Dashboard = () => {
                         {navigation.map((item) => (
                             <button
                                 key={item.id}
-                                onClick={() => setActiveSection(item.id)}
-                                className={`w-full flex items-center px-6 py-3 text-sm font-medium transition-colors ${
+                                onClick={() => {
+                                    setActiveSection(item.id);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                                className={`w-full flex items-center px-6 py-3.5 text-sm font-medium transition-colors ${
                                     activeSection === item.id
                                         ? theme === 'dark' 
                                             ? 'text-primary-400 bg-gray-700' 
@@ -963,16 +998,27 @@ const Dashboard = () => {
                             </button>
                         ))}
                     </nav>
-                </motion.div>
+                </div>
 
                 {/* Main Content */}
-                <div className="flex-1 p-8">
+                <div className={`flex-1 p-4 lg:p-8 transition-all duration-300 ${isMobileMenuOpen ? 'lg:ml-0 blur-sm lg:blur-none' : ''}`}>
                     <div className="max-w-7xl mx-auto">
                         {/* Header */}
-                        <div className="flex justify-between items-center mb-8">
-                            <h1 className={`text-2xl font-bold ${theme === 'dark' ? 'text-white' : ''}`}>
-                                {navigation.find(n => n.id === activeSection)?.name}
-                            </h1>
+                        <div className="flex justify-between items-center mb-6 lg:mb-8">
+                            <div className="flex items-center space-x-4">
+                                {/* Hamburger menu button - Only visible on mobile */}
+                                <button
+                                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                    className="block lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                                    </svg>
+                                </button>
+                                <h1 className={`text-xl lg:text-2xl font-bold ${theme === 'dark' ? 'text-white' : ''}`}>
+                                    {navigation.find(n => n.id === activeSection)?.name}
+                                </h1>
+                            </div>
                             <div className="relative" ref={settingsRef}>
                                 <button 
                                     onClick={() => setIsSettingsModalOpen(true)}
@@ -990,7 +1036,7 @@ const Dashboard = () => {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -20 }}
-                                className="space-y-8"
+                                className="space-y-4 lg:space-y-8"
                             >
                                 {renderSection()}
                             </motion.div>
