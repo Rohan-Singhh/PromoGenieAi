@@ -18,18 +18,24 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(morgan('dev')); // Logging HTTP requests
-app.use(cors({ 
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        'https://promo-genie-ai-tgyr.vercel.app',  // Production URL
-        'https://promo-genie-ai-tgyr-git-main-rohan-singhs-projects-218eb5a2.vercel.app', // Main branch preview
-        'https://promo-genie-ai-tgyr-n8ht0077v-rohan-singhs-projects-218eb5a2.vercel.app' // Preview deployments
-    ],
+app.use(cors({
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://promo-genie-ai-tgyr.vercel.app'
+        ];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());

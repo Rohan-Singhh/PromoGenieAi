@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
 
+console.log("Using API URL:", API_URL); // Debugging
+
 // Add token to all requests
 axios.interceptors.request.use(
     (config) => {
@@ -20,14 +22,12 @@ const authService = {
     // Register new user
     register: async (userData) => {
         try {
-            console.log('Sending registration request:', userData);
             const response = await axios.post(`${API_URL}/register`, userData, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 withCredentials: true
             });
-            console.log('Registration response:', response.data);
             return response.data;
         } catch (error) {
             console.error('Registration error:', error.response?.data || error.message);
@@ -47,10 +47,7 @@ const authService = {
             return response.data;
         } catch (error) {
             console.error('Login error:', error.response?.data || error.message);
-            if (error.response?.data) {
-                throw error.response.data;
-            }
-            throw { message: 'Login failed' };
+            throw error.response?.data || { message: 'Login failed' };
         }
     },
 
@@ -80,4 +77,4 @@ const authService = {
     }
 };
 
-export default authService; 
+export default authService;
