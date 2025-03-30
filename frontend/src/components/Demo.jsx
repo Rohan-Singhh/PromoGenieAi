@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import demoVideo from '../assets/demo.mp4';
+import demoVideo from '../assets/demo_compressed.mp4';
 
 const demoScripts = [
   "Drive more sales with our new collection 🛍️",
