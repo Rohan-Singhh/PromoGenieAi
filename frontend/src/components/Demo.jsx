@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import demoVideo from '../assets/demo.mp4';
 
 const demoScripts = [
   "Drive more sales with our new collection 🛍️",
@@ -18,6 +19,34 @@ export default function Demo() {
   const [inputValue, setInputValue] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedScripts, setGeneratedScripts] = useState([]);
+  const videoRef = useRef(null);
+  const videoContainerRef = useRef(null);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.3, // When 30% of the video is visible
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting && videoRef.current) {
+          videoRef.current.pause();
+        }
+      });
+    }, options);
+
+    if (videoContainerRef.current) {
+      observer.observe(videoContainerRef.current);
+    }
+
+    return () => {
+      if (videoContainerRef.current) {
+        observer.unobserve(videoContainerRef.current);
+      }
+    };
+  }, []);
 
   const handleGenerate = () => {
     if (!inputValue) return;
@@ -111,15 +140,24 @@ export default function Demo() {
 
           {/* Video Demo */}
           <motion.div
+            ref={videoContainerRef}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="aspect-video bg-gray-900 rounded-xl sm:rounded-2xl overflow-hidden shadow-xl"
           >
-            <div className="w-full h-full flex items-center justify-center text-white">
-              <p className="text-base sm:text-lg lg:text-xl">Demo Video Placeholder</p>
-            </div>
+            <video
+              ref={videoRef}
+              className="w-full h-full object-cover"
+              controls
+              muted
+              loop
+              poster="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1932&auto=format&fit=crop"
+            >
+              <source src={demoVideo} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </motion.div>
         </div>
       </div>
