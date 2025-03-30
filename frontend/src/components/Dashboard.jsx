@@ -130,8 +130,11 @@ const Dashboard = () => {
     ];
 
     const handleGenerateScript = async () => {
-        // Check if user has exceeded free limit
-        if (scriptsGenerated >= 5 && activeSection !== 'subscription') {
+        // Get current user's email from state
+        const userEmail = user?.email;
+
+        // Skip limit check for demo22@gmail.com
+        if (userEmail !== 'demo22@gmail.com' && scriptsGenerated >= 5 && activeSection !== 'subscription') {
             setActiveSection('subscription');
             return;
         }

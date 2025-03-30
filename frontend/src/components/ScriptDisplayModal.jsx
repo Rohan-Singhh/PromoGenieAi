@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XMarkIcon, ClipboardDocumentIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, ClipboardDocumentIcon, CheckIcon } from '@heroicons/react/24/outline';
 
 const ScriptDisplayModal = ({ isOpen, onClose, scripts }) => {
     const modalRef = useRef(null);
+    const [copiedIndex, setCopiedIndex] = useState(null);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -25,13 +26,36 @@ const ScriptDisplayModal = ({ isOpen, onClose, scripts }) => {
 
     // Format script text
     const formatScript = (script) => {
-        let formattedScript = script.replace(/^\d+[\.:]\s*/, '');
-        formattedScript = formattedScript.charAt(0).toUpperCase() + formattedScript.slice(1);
-        formattedScript = formattedScript.replace(/^"(.*)"$/, '$1');
-        formattedScript = formattedScript.replace(/--+$/, '');
-        formattedScript = formattedScript.replace(/^\*\*[^*]+\*\*\s*/, '');
-        formattedScript = formattedScript.trim();
+        // Remove all variations of "Script X:" from the content
+        let formattedScript = script
+            .replace(/^Script \d+:?\s*/gim, '')  // Remove "Script X:" at start
+            .replace(/\n\s*Script \d+:?\s*/gim, '')  // Remove "Script X:" after newlines
+            .replace(/["""]/g, '')  // Remove all types of quotation marks
+            .replace(/\*/g, '')  // Remove all asterisks
+            .replace(/--+$/, '')  // Remove trailing dashes
+            .replace(/###/g, '')  // Remove hash symbols
+            .trim();
+
+        // Split into sections and preserve proper spacing
+        const sections = formattedScript.split(/\n(?=(?:Opening Hook|Problem Statement|Solution\/Product|Key Benefits|Social Proof|Call to Action))/g);
+        
+        // Process each section to ensure proper formatting
+        formattedScript = sections
+            .map(section => section.trim())
+            .filter(section => section)
+            .join('\n\n');
+
         return formattedScript;
+    };
+
+    const handleCopyScript = async (script, index) => {
+        try {
+            await navigator.clipboard.writeText(formatScript(script));
+            setCopiedIndex(index);
+            setTimeout(() => setCopiedIndex(null), 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
     };
 
     return (
@@ -66,7 +90,7 @@ const ScriptDisplayModal = ({ isOpen, onClose, scripts }) => {
                             >
                                 <div 
                                     ref={modalRef} 
-                                    className="relative w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden"
+                                    className="relative w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden"
                                     style={{ maxHeight: '90vh' }}
                                 >
                                     {/* Close Button */}
@@ -84,34 +108,54 @@ const ScriptDisplayModal = ({ isOpen, onClose, scripts }) => {
                                         {/* Header */}
                                         <div className="text-center mb-6">
                                             <h2 className="text-2xl font-bold text-gray-900 mb-2">Generated Scripts</h2>
-                                            <p className="text-gray-600">Here are your AI-generated advertising scripts</p>
+                                            <p className="text-gray-600">Click on any script to edit or select text. Use the copy button to copy the entire script.</p>
                                         </div>
 
                                         {/* Scripts List */}
-                                        <div className="space-y-4">
+                                        <div className="space-y-6">
                                             {scripts.map((script, index) => (
                                                 <motion.div
                                                     key={index}
                                                     initial={{ opacity: 0, y: 20 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: index * 0.1 }}
-                                                    className="p-6 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary-500 hover:shadow-md transition-all cursor-pointer group relative"
+                                                    className="group relative"
                                                 >
-                                                    <div className="prose prose-sm max-w-none">
-                                                        <p className="whitespace-pre-wrap text-gray-700">
+                                                    <div className="p-6 bg-gray-50 rounded-lg border border-gray-200 hover:border-primary-500 hover:shadow-lg transition-all">
+                                                        <div className="flex justify-between items-center mb-4">
+                                                            <div className="w-20"> {/* Space for left side */}
+                                                            </div>
+                                                            <h3 className="text-lg font-semibold text-gray-900 flex-grow text-center">
+                                                                AI Generated Script
+                                                            </h3>
+                                                            <div className="w-20"> {/* Container for copy button, same width as left space */}
+                                                                <motion.button
+                                                                    whileHover={{ scale: 1.05 }}
+                                                                    whileTap={{ scale: 0.95 }}
+                                                                    onClick={() => handleCopyScript(script, index)}
+                                                                    className="p-2 rounded-lg bg-white shadow-sm hover:shadow-md transition-all flex items-center space-x-2"
+                                                                >
+                                                                    {copiedIndex === index ? (
+                                                                        <>
+                                                                            <CheckIcon className="w-5 h-5 text-green-500" />
+                                                                            <span className="text-sm text-green-500">Copied!</span>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <ClipboardDocumentIcon className="w-5 h-5 text-primary-600" />
+                                                                            <span className="text-sm text-primary-600">Copy</span>
+                                                                        </>
+                                                                    )}
+                                                                </motion.button>
+                                                            </div>
+                                                        </div>
+                                                        <div 
+                                                            className="prose prose-sm max-w-none select-text cursor-text"
+                                                            style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}
+                                                        >
                                                             {formatScript(script)}
-                                                        </p>
+                                                        </div>
                                                     </div>
-                                                    
-                                                    {/* Copy Button */}
-                                                    <motion.button
-                                                        whileHover={{ scale: 1.05 }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                        onClick={() => navigator.clipboard.writeText(formatScript(script))}
-                                                        className="absolute top-4 right-4 p-2 text-primary-600 hover:text-primary-700 bg-white rounded-lg hover:bg-primary-50 transition-colors shadow-sm opacity-0 group-hover:opacity-100"
-                                                    >
-                                                        <ClipboardDocumentIcon className="w-5 h-5" />
-                                                    </motion.button>
                                                 </motion.div>
                                             ))}
                                         </div>
