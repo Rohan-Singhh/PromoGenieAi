@@ -24,14 +24,6 @@ const faqs = [
     answer: "We offer multiple quality options from standard (720p) to high definition (1080p) and even 4K for enterprise plans. The quality you can access depends on your subscription tier."
   },
   {
-    question: "Do you offer refunds?",
-    answer: "Yes, we offer a 30-day money-back guarantee if you're not satisfied with our service. No questions asked."
-  },
-  {
-    question: "Is there a free trial?",
-    answer: "Yes! We offer a 14-day free trial with full access to all features. No credit card required to start your trial."
-  },
-  {
     question: "What kind of support do you provide?",
     answer: "We provide comprehensive support including email, chat, and phone support (for enterprise plans). Our support team is available 24/7 to help you with any questions or issues."
   }
