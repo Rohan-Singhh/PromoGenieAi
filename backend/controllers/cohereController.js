@@ -15,10 +15,11 @@ const generateScript = async (req, res) => {
 
         const { productName, targetAudience, tone, adStyle, callToAction } = req.body;
 
-        const prompt = `Generate 8 different video advertising scripts for ${productName} targeting ${targetAudience}. 
-        Tone: ${tone}
-        Style: ${adStyle}
-        Call to Action: ${callToAction || 'Get started today!'}
+        const prompt = `As a Facebook marketer, create 8 simple and engaging video ad scripts for ${productName}, tailored for ${targetAudience}. 
+        Make the tone feel natural and relatable — like you're talking to a friend. 
+        Keep the style clear, scroll-stopping, and super easy to understand. 
+        Focus on showing value quickly and emotionally connecting with the viewer. 
+        End each script with a strong, friendly call to action like: ${callToAction || 'Get started today!'}
         
         Requirements for each script:
         1. Each script should be 2-3 minutes long
