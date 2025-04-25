@@ -1,35 +1,37 @@
 # PromoGenieAI 🎯
 
-PromoGenieAI is a powerful AI-driven platform that helps businesses create engaging promotional content and marketing materials with ease. Our platform combines modern design with advanced AI capabilities to streamline your marketing workflow.
+PromoGenieAI is a powerful AI-driven platform that helps businesses create engaging video ad scripts with ease. Leveraging Cohere's advanced AI capabilities, our platform generates customized video advertising scripts tailored to your product and audience.
 
 ## 🌟 Features
 
-- **AI-Powered Ad Generation**: Create compelling ad copy with advanced AI
-- **Video Studio**: Generate and edit promotional videos
-- **Analytics Dashboard**: Track your campaign performance
-- **Subscription Management**: Flexible plans for different needs
-- **Modern UI/UX**: Intuitive interface with dark/light mode support
+- **AI-Powered Script Generation**: Create compelling video ad scripts using Cohere AI
+- **Customizable Parameters**: Tailor scripts by product, audience, tone, and style
+- **Script History**: Track and manage your generated scripts
+- **User Dashboard**: Intuitive interface for script management
+- **Modern UI/UX**: Responsive design with dark/light mode support
+- **Secure Authentication**: JWT-based user authentication system
 
 ## 🚀 Live Demo
 
-- Frontend: On Vercel
-- Backend: [https://promogenieai.onrender.com](https://promogenieai.onrender.com)
+- Frontend: [https://promogenieai.vercel.app](https://promogenieai.vercel.app)
+- Backend: [https://promo-genie-ai.onrender.com](https://promo-genie-ai.onrender.com)
 
 ## 🛠️ Tech Stack
 
 ### Frontend
 - React + Vite
 - Tailwind CSS
-- Framer Motion
-- Axios for API calls
 - React Router for navigation
+- Axios for API integration
+- Context API for state management
 
 ### Backend
 - Node.js
 - Express.js
 - MongoDB
+- Cohere AI API
 - JWT Authentication
-- CORS enabled
+- Security middleware (CORS, Helmet, Rate Limiting)
 
 ## 🏗️ Project Structure
 
@@ -39,20 +41,57 @@ PromoGenieAI/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Dashboard.jsx
+│   │   │   ├── Hero.jsx
+│   │   │   ├── Features.jsx
+│   │   │   ├── HowItWorks.jsx
+│   │   │   ├── Testimonials.jsx
+│   │   │   ├── Pricing.jsx
+│   │   │   ├── FAQ.jsx
 │   │   │   ├── Login.jsx
-│   │   │   └── SignIn.jsx
+│   │   │   ├── SignIn.jsx
+│   │   │   ├── Demo.jsx
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── PrivateRoute.jsx
+│   │   │   ├── GenerationModal.jsx
+│   │   │   ├── ScriptDisplayModal.jsx
+│   │   │   └── SettingsModal.jsx
 │   │   ├── services/
 │   │   │   └── authService.js
-│   │   └── App.jsx
-│   ├── .env
+│   │   ├── context/
+│   │   │   └── ThemeContext.jsx
+│   │   ├── assets/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── public/
+│   ├── .env.development
+│   ├── .env.production
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── tailwind.config.js
 │   └── package.json
 │
 └── backend/
+    ├── config/
+    │   ├── db.js
+    │   ├── cohere.js
+    │   └── dotenv.js
+    ├── controllers/
+    │   ├── authController.js
+    │   └── cohereController.js
+    ├── middlewares/
+    │   ├── auth.js
+    │   └── errorHandler.js
     ├── models/
-    │   └── User.js
-    ├── middleware/
-    │   └── error.js
-    ├── index.js
+    │   ├── User.js
+    │   └── Script.js
+    ├── routes/
+    │   ├── authRoutes.js
+    │   └── cohereRoutes.js
+    ├── utils/
+    │   ├── inputValidator.js
+    │   └── tokenUtils.js
+    ├── server.js
     └── package.json
 ```
 
@@ -62,6 +101,7 @@ PromoGenieAI/
 - Node.js (v14 or higher)
 - npm or yarn
 - MongoDB
+- Cohere API key
 
 ### Frontend Setup
 1. Navigate to frontend directory:
@@ -74,12 +114,17 @@ cd frontend
 npm install
 ```
 
-3. Create `.env` file:
+3. Create `.env.development` file:
 ```env
-VITE_API_BASE_URL=https://promogenieai.onrender.com
+VITE_API_BASE_URL=http://localhost:5000
 ```
 
-4. Start development server:
+4. Create `.env.production` file:
+```env
+VITE_API_BASE_URL=https://promo-genie-ai.onrender.com
+```
+
+5. Start development server:
 ```bash
 npm run dev
 ```
@@ -99,6 +144,9 @@ npm install
 ```env
 MONGODB_URI=your_mongodb_uri
 PORT=5000
+NODE_ENV=development
+COHERE_API_KEY=your_cohere_api_key
+JWT_SECRET=your_jwt_secret
 ```
 
 4. Start server:
@@ -109,7 +157,7 @@ npm start
 ## 🔒 Authentication
 
 The platform uses JWT-based authentication:
-- Register with email and password
+- Register with full name, email, and password
 - Login to receive JWT token
 - Protected routes require valid token
 - Automatic token handling in frontend
@@ -120,40 +168,41 @@ The platform uses JWT-based authentication:
 - Secure login/signup system
 - JWT token-based authentication
 - Password encryption
-- Session management
+- Theme preference persistence
 
 ### 2. Dashboard
 - Modern, responsive design
 - Dark/light mode toggle
-- Real-time statistics
-- User profile management
+- Script generation history
+- User settings management
 
-### 3. Ad Generation
-- AI-powered content creation
-- Multiple ad format support
-- Template library
+### 3. Script Generation
+- AI-powered content creation using Cohere
+- Customizable parameters:
+  - Product name
+  - Target audience
+  - Tone
+  - Ad style
+  - Call to action
+- Structured script sections:
+  - Opening Hook
+  - Problem Statement
+  - Solution/Product Introduction
+  - Key Benefits/Features
+  - Social Proof/Testimonials
+  - Call to Action
 - Real-time preview
-
-### 4. Video Studio
-- Video content generation
-- Custom editing tools
-- Export in multiple formats
-- Template-based creation
-
-### 5. Analytics
-- Campaign performance tracking
-- User engagement metrics
-- ROI calculations
-- Custom report generation
 
 ## 🔐 Security Features
 
 - JWT Authentication
 - Password Encryption
 - CORS Protection
-- Rate Limiting
+- Rate Limiting (100 requests per 15 minutes)
 - Secure Headers (Helmet)
 - Input Validation
+- Request Compression
+- Cookie Parser
 
 ## 🤝 Contributing
 
@@ -169,4 +218,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👥 Team
 
-- Rohan Ranjan - Full Stack Developer, Competetive Programmer
+- Rohan Ranjan - Full Stack Developer, Competitive Programmer
