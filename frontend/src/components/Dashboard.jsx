@@ -70,8 +70,12 @@ const Dashboard = () => {
                     return;
                 }
 
-                const userData = await authService.getCurrentUser();
-                setUser(userData);
+                const response = await authService.getCurrentUser();
+                if (response.success && response.user) {
+                    setUser(response.user);
+                } else {
+                    throw new Error('Failed to fetch user data');
+                }
             } catch (error) {
                 console.error('Error fetching user data:', error);
                 navigate('/login');
@@ -963,10 +967,10 @@ const Dashboard = () => {
                             <UserIcon className="w-8 h-8 text-primary-600" />
                             <div>
                                 <h2 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
-                                    {user?.fullName || 'Rohan'}
+                                    {user?.fullName || user?.name || 'Loading...'}
                                 </h2>
                                 <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                                    Free Plan
+                                    {scriptsGenerated >= 5 ? 'Pro Plan' : 'Free Plan'}
                                 </p>
                             </div>
                             {/* Close button for mobile only */}

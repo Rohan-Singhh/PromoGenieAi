@@ -47,13 +47,17 @@ const SignIn = () => {
                 password: formData.password
             });
             
-            if (response.token) {
-                setLoading(false);
+            if (response.success && response.token) {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('user', JSON.stringify(response.user));
                 navigate('/dashboard', { replace: true });
+            } else {
+                setError(response.message || 'Registration failed');
             }
         } catch (err) {
             console.error('Registration error:', err);
             setError(err.message || 'Registration failed');
+        } finally {
             setLoading(false);
         }
     };

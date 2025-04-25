@@ -29,8 +29,18 @@ const registerUser = async (req, res) => {
             password
         });
 
+        // Generate token for the new user
+        const token = generateToken(user._id);
+
         res.status(201).json({
             success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.fullName,
+                email: user.email,
+                theme: user.theme || 'light'
+            },
             message: 'User registered successfully'
         });
     } catch (error) {
