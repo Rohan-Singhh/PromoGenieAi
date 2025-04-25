@@ -15,34 +15,31 @@ const generateScript = async (req, res) => {
 
         const { productName, targetAudience, tone, adStyle, callToAction } = req.body;
 
-        const prompt = `As a Facebook marketer, create 8 simple and engaging video ad scripts for ${productName}, tailored for ${targetAudience}. 
+        const prompt = `As a Facebook marketer, create 3 engaging and concise video ad scripts for ${productName}, tailored for ${targetAudience}. 
         Make the tone feel natural and relatable — like you're talking to a friend. 
         Keep the style clear, scroll-stopping, and super easy to understand. 
         Focus on showing value quickly and emotionally connecting with the viewer. 
         End each script with a strong, friendly call to action like: ${callToAction || 'Get started today!'}
         
         Requirements for each script:
-        1. Each script should be 2-3 minutes long
-        2. Break down each script into these sections with clear formatting:
-           Opening Hook (15-20 seconds)
-           Problem Statement (20-30 seconds)
-           Solution/Product Introduction (30-40 seconds)
-           Key Benefits/Features (30-40 seconds)
-           Social Proof/Testimonials (20-30 seconds)
-           Call to Action (15-20 seconds)
+        1. Each script should be 60-90 seconds long
+        2. Break down each script into these sections:
+           Opening Hook (10-15 seconds)
+           Problem/Solution (20-30 seconds)
+           Key Benefits (20-25 seconds)
+           Call to Action (10-15 seconds)
 
-        For each section, include these elements on separate lines:
-        Visual: [Description of what viewers see]
-        Music: [Description of background music]
-        Voice: [Description of narration style]
-        Action: [Description of what happens]`;
+        For each section, include:
+        Visual: [Brief description]
+        Voice: [Brief narration style]
+        Action: [Key actions]`;
 
         const cohereClient = getClient();
         const response = await cohereClient.chat({
             model: 'command-a-03-2025',
             messages: [{ role: 'user', content: prompt }],
-            temperature: 0.7,
-            max_tokens: 4000,
+            temperature: 0.6,
+            max_tokens: 2000,
             stream: false
         });
 
