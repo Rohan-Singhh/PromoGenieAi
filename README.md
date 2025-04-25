@@ -1,10 +1,10 @@
 # PromoGenieAI 🎯
 
-PromoGenieAI is a powerful AI-driven platform that helps businesses create engaging video ad scripts with ease. Leveraging Cohere's advanced AI capabilities, our platform generates customized video advertising scripts tailored to your product and audience.
+PromoGenieAI is a powerful AI-driven platform that helps businesses create engaging video ad scripts with ease. Leveraging Groq's advanced AI capabilities, our platform generates customized video advertising scripts tailored to your product and audience.
 
 ## 🌟 Features
 
-- **AI-Powered Script Generation**: Create compelling video ad scripts using Cohere AI
+- **AI-Powered Script Generation**: Create compelling video ad scripts using Groq AI
 - **Customizable Parameters**: Tailor scripts by product, audience, tone, and style
 - **Script History**: Track and manage your generated scripts
 - **User Dashboard**: Intuitive interface for script management
@@ -29,7 +29,7 @@ PromoGenieAI is a powerful AI-driven platform that helps businesses create engag
 - Node.js
 - Express.js
 - MongoDB
-- Cohere AI API
+- Groq AI API (llama3-70b-8192 model)
 - JWT Authentication
 - Security middleware (CORS, Helmet, Rate Limiting)
 
@@ -74,11 +74,11 @@ PromoGenieAI/
 └── backend/
     ├── config/
     │   ├── db.js
-    │   ├── cohere.js
+    │   ├── groq.js
     │   └── dotenv.js
     ├── controllers/
     │   ├── authController.js
-    │   └── cohereController.js
+    │   └── groqController.js
     ├── middlewares/
     │   ├── auth.js
     │   └── errorHandler.js
@@ -87,7 +87,7 @@ PromoGenieAI/
     │   └── Script.js
     ├── routes/
     │   ├── authRoutes.js
-    │   └── cohereRoutes.js
+    │   └── groqRoutes.js
     ├── utils/
     │   ├── inputValidator.js
     │   └── tokenUtils.js
@@ -101,7 +101,7 @@ PromoGenieAI/
 - Node.js (v14 or higher)
 - npm or yarn
 - MongoDB
-- Cohere API key
+- Groq API key
 
 ### Frontend Setup
 1. Navigate to frontend directory:
@@ -145,7 +145,7 @@ npm install
 MONGODB_URI=your_mongodb_uri
 PORT=5000
 NODE_ENV=development
-COHERE_API_KEY=your_cohere_api_key
+GROQ_API_KEY=your_groq_api_key
 JWT_SECRET=your_jwt_secret
 ```
 
@@ -177,7 +177,7 @@ The platform uses JWT-based authentication:
 - User settings management
 
 ### 3. Script Generation
-- AI-powered content creation using Cohere
+- AI-powered content creation using Groq's llama3-70b-8192 model
 - Customizable parameters:
   - Product name
   - Target audience
@@ -185,24 +185,20 @@ The platform uses JWT-based authentication:
   - Ad style
   - Call to action
 - Structured script sections:
-  - Opening Hook
-  - Problem Statement
-  - Solution/Product Introduction
-  - Key Benefits/Features
-  - Social Proof/Testimonials
-  - Call to Action
+  - Opening Hook (10-15 seconds)
+  - Problem/Solution (20-30 seconds)
+  - Key Benefits (20-25 seconds)
+  - Call to Action (10-15 seconds)
 - Real-time preview
+- Generates 4 unique scripts per request
 
 ## 🔐 Security Features
 
 - JWT Authentication
 - Password Encryption
 - CORS Protection
-- Rate Limiting (100 requests per 15 minutes)
-- Secure Headers (Helmet)
-- Input Validation
-- Request Compression
-- Cookie Parser
+- Rate Limiting
+- Helmet Security Headers
 
 ## 🤝 Contributing
 
