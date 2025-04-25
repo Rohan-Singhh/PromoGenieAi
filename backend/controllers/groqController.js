@@ -1,4 +1,4 @@
-const { getClient } = require('../config/cohere');
+const { getClient } = require('../config/groq');
 const Script = require('../models/Script');
 const { validateScriptGeneration } = require('../utils/inputValidator');
 
@@ -15,7 +15,7 @@ const generateScript = async (req, res) => {
 
         const { productName, targetAudience, tone, adStyle, callToAction } = req.body;
 
-        const prompt = `As a Facebook marketer, create 3 engaging and concise video ad scripts for ${productName}, tailored for ${targetAudience}. 
+        const prompt = `As a Facebook marketer, create 4 engaging and concise video ad scripts for ${productName}, tailored for ${targetAudience}. 
         Make the tone feel natural and relatable — like you're talking to a friend. 
         Keep the style clear, scroll-stopping, and super easy to understand. 
         Focus on showing value quickly and emotionally connecting with the viewer. 
@@ -32,20 +32,30 @@ const generateScript = async (req, res) => {
         For each section, include:
         Visual: [Brief description]
         Voice: [Brief narration style]
-        Action: [Key actions]`;
+        Action: [Key actions]
+        
+        Please number each script clearly as "Script 1:", "Script 2:", etc. up to Script 4.`;
 
-        const cohereClient = getClient();
-        const response = await cohereClient.chat({
-            model: 'command-a-03-2025',
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.6,
-            max_tokens: 2000,
-            stream: false
+        const groqClient = getClient();
+        const response = await groqClient.post('/chat/completions', {
+            model: 'llama3-70b-8192',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are an expert Facebook video ad script writer.'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            temperature: 0.7,
+            max_tokens: 4096
         });
 
         let scripts = [];
-        if (response.message?.content) {
-            const content = response.message.content;
+        if (response.data?.choices && response.data.choices[0]?.message?.content) {
+            const content = response.data.choices[0].message.content;
             scripts = typeof content === 'string' 
                 ? content.split(/(?=Script \d+:)/i).filter(script => script.trim())
                 : Array.isArray(content) 
@@ -53,9 +63,9 @@ const generateScript = async (req, res) => {
                     : [];
         }
 
-        // Take only the first 7 scripts if we have more
-        if (scripts.length > 7) {
-            scripts = scripts.slice(0, 7);
+        // Take only the first 4 scripts if we have more
+        if (scripts.length > 4) {
+            scripts = scripts.slice(0, 4);
         }
 
         // Save to database
@@ -74,11 +84,11 @@ const generateScript = async (req, res) => {
             scripts: newScript.scripts
         });
     } catch (error) {
-        console.error('Script generation error:', error);
+        console.error('Script generation error:', error?.response?.data || error.message || error);
         res.status(500).json({
             success: false,
             message: 'Error generating scripts',
-            details: error.response?.data || 'No additional details available'
+            details: error.response?.data?.error || error.message || 'No additional details available'
         });
     }
 };

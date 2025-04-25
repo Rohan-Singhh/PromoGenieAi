@@ -4,7 +4,7 @@ const { protect } = require('../middlewares/auth');
 const {
     generateScript,
     getScriptHistory
-} = require('../controllers/cohereController');
+} = require('../controllers/groqController');
 
 router.post('/generate', protect, generateScript);
 router.get('/history', protect, getScriptHistory);

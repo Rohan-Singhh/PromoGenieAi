@@ -11,7 +11,6 @@ const loadEnv = require('./config/dotenv');
 loadEnv();
 
 const connectDB = require('./config/db');
-const { initializeCohere } = require('./config/cohere');
 const { errorHandler, notFound } = require('./middlewares/errorHandler');
 
 // Initialize Express app
@@ -22,11 +21,13 @@ const alternatePort = 5001; // Alternate port if primary is in use
 // Trust proxies for rate limiting
 app.set('trust proxy', 1);
 
-// Initialize Cohere client
-initializeCohere();
-
 // Connect to MongoDB
-connectDB();
+connectDB().then(() => {
+    console.log('✅ MongoDB Connected Successfully');
+}).catch(err => {
+    console.error('❌ MongoDB Connection Error:', err);
+    process.exit(1);
+});
 
 // Middleware
 app.use(morgan('dev'));
@@ -75,7 +76,7 @@ app.use(limiter);
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/scripts', require('./routes/cohereRoutes'));
+app.use('/api/scripts', require('./routes/groqRoutes'));
 
 // Welcome route
 app.get('/', (req, res) => {
@@ -90,7 +91,19 @@ app.use(errorHandler);
 const startServer = () => {
     try {
         app.listen(port, () => {
-            console.log(`Server running in ${process.env.NODE_ENV} mode on port ${port}`);
+            console.log('\n🚀 Server Initialization:');
+            console.log(`✅ Server running in ${process.env.NODE_ENV} mode on port ${port}`);
+            console.log('✅ API Routes:');
+            console.log('   - /api/auth: Authentication endpoints');
+            console.log('   - /api/scripts: Script generation endpoints');
+            console.log('\n📝 Environment Setup:');
+            console.log(`✅ NODE_ENV: ${process.env.NODE_ENV}`);
+            console.log(`✅ GROQ API: ${process.env.GROQ_API_KEY ? 'Configured' : 'Missing'}`);
+            console.log('\n🔒 Security:');
+            console.log('✅ CORS: Configured');
+            console.log('✅ Helmet: Enabled');
+            console.log('✅ Rate Limiting: Enabled');
+            console.log('\n🌐 Server is ready to handle requests!\n');
         }).on('error', (err) => {
             if (err.code === 'EADDRINUSE') {
                 console.log(`Port ${port} is busy, trying alternate port ${alternatePort}`);
