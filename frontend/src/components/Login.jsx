@@ -22,11 +22,11 @@ const Login = () => {
             if (response.token) {
                 localStorage.setItem('token', response.token);
                 localStorage.setItem('user', JSON.stringify(response.user));
-                navigate('/dashboard');
+                setLoading(false);
+                navigate('/dashboard', { replace: true });
             }
         } catch (error) {
             setError(error.message || 'Login failed. Please try again.');
-        } finally {
             setLoading(false);
         }
     };

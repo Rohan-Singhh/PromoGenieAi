@@ -22,12 +22,19 @@ const authService = {
     // Register new user
     register: async (userData) => {
         try {
-            const response = await axios.post(`${API_URL}/register`, userData, {
+            const response = await axios.post(`${API_URL}/auth/register`, userData, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 withCredentials: true
             });
+            
+            // Automatically store token and user data after successful registration
+            if (response.data.token) {
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+            }
+            
             return response.data;
         } catch (error) {
             console.error('Registration error:', error.response?.data || error.message);
@@ -38,7 +45,7 @@ const authService = {
     // Login user
     login: async (email, password) => {
         try {
-            const response = await axios.post(`${API_URL}/login`, { email, password }, {
+            const response = await axios.post(`${API_URL}/auth/login`, { email, password }, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -65,7 +72,7 @@ const authService = {
             if (!token) {
                 throw new Error('No token found');
             }
-            const response = await axios.get(`${API_URL}/users/me`, {
+            const response = await axios.get(`${API_URL}/auth/profile`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -80,7 +87,7 @@ const authService = {
     // Generate script
     generateScript: async (scriptData, signal) => {
         try {
-            const response = await axios.post(`${API_URL}/generate-script`, scriptData, {
+            const response = await axios.post(`${API_URL}/scripts/generate`, scriptData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

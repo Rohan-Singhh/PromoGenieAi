@@ -41,16 +41,19 @@ const SignIn = () => {
         }
 
         try {
-            await authService.register({
+            const response = await authService.register({
                 fullName: formData.fullName,
                 email: formData.email,
                 password: formData.password
             });
-            navigate('/dashboard');
+            
+            if (response.token) {
+                setLoading(false);
+                navigate('/dashboard', { replace: true });
+            }
         } catch (err) {
             console.error('Registration error:', err);
             setError(err.message || 'Registration failed');
-        } finally {
             setLoading(false);
         }
     };
