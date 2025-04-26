@@ -5,7 +5,7 @@ const loadEnv = () => {
     
     const requiredEnvVars = [
         'MONGODB_URI',
-        'COHERE_API_KEY',
+        'GROQ_API_KEY',
         'JWT_SECRET',
         'NODE_ENV'
     ];
