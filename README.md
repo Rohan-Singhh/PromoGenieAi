@@ -121,7 +121,7 @@ VITE_API_BASE_URL=http://localhost:5000
 
 4. Create `.env.production` file:
 ```env
-VITE_API_BASE_URL=https://promo-genie-ai.onrender.com
+  VITE_API_BASE_URL=https://promogenieai.onrender.com
 ```
 
 5. Start development server:
