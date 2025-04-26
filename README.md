@@ -13,8 +13,8 @@ PromoGenieAI is a powerful AI-driven platform that helps businesses create engag
 
 ## 🚀 Live Demo
 
-- Frontend: [https://promogenieai.vercel.app](https://promogenieai.vercel.app)
-- Backend: [https://promo-genie-ai.onrender.com](https://promo-genie-ai.onrender.com)
+- Frontend: [https://promo-genie-ai-tgyr.vercel.app ](https://promo-genie-ai-tgyr.vercel.app )
+- Backend: [https://promogenieai.onrender.com](https://promogenieai.onrender.com)
 
 ## 🛠️ Tech Stack
 
